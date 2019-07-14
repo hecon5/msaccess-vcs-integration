@@ -90,7 +90,7 @@ End Sub
 ' Save a Table Definition as SQL statement
 Public Sub VCS_ExportTableDef(ByVal TableName As String, ByVal directory As String)
     Dim fileName As String
-    Dim db As Database
+    Dim db As DAO.Database
     fileName = directory & TableName & ".xml"
     
     ' If JSON version exists then use template model as well.
@@ -421,7 +421,7 @@ Public Sub VCS_ImportTableDef(ByVal tblName As String, ByVal directory As String
     Dim sTmpTable As String
     Dim oFields As Object
     Dim vVal As Variant
-    Dim db As Database
+    Dim db As DAO.Database
     
     Set db = CurrentDb
     
@@ -466,12 +466,14 @@ Public Sub VCS_ImportTableDef(ByVal tblName As String, ByVal directory As String
         db.TableDefs.Refresh
         If Parsed.Exists("DropIndexes") Then
             For Each vVal In Parsed("DropIndexes")
+                On Error Resume Next
                 db.TableDefs(tblName).Indexes.Delete vVal
             Next vVal
         End If
        
         If Parsed.Exists("DropFields") Then
             For Each vVal In Parsed("DropFields")
+                On Error Resume Next
                 db.TableDefs(tblName).Fields.Delete vVal
             Next vVal
         End If
