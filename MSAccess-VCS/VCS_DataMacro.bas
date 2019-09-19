@@ -1,3 +1,4 @@
+Attribute VB_Name = "VCS_DataMacro"
 Option Compare Database
 
 Option Private Module

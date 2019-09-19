@@ -1,3 +1,4 @@
+Attribute VB_Name = "VCS_Report"
 Option Compare Database
 
 Option Private Module

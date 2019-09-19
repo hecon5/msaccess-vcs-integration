@@ -1,3 +1,4 @@
+Attribute VB_Name = "VCS_Reference"
 Option Compare Database
 
 Option Private Module
