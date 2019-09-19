@@ -79,6 +79,14 @@ Private Function StrToBool(ByVal sStr As String, ByVal default As Boolean)
     End If
 End Function
 
+Private Function BoolToStr(ByVal inBool As Boolean) As String
+    If inBool = True Then
+        BoolToStr = "True"
+    Else
+        BoolToStr = "False"
+    End If
+End Function
+
 Public Sub LoadCustomisations()
     Dim bLoaded As Boolean
     Dim sValue As String
@@ -99,6 +107,22 @@ Public Sub LoadCustomisations()
         ExportTables = StrToBool(GetSectionEntry("Config", "ExportTables", path & "vcs.cfg"), True)
         HandleQueriesAsSQL = StrToBool(GetSectionEntry("Config", "HandleQueriesAsSQL", path & "vcs.cfg"), True)
         UpdateTemplateTable = StrToBool(GetSectionEntry("Config", "UpdateTemplateTable", path & "vcs.cfg"), False)
+ 
+            'save config file settings.
+        Call SetSectionEntry("Info", "FileComment", "This file is used by the VCS system for configuration information.", path & "vcs.cfg")
+        Call SetSectionEntry("Info", "DO-NOT-DELETE-THIS-FILE", "DO not delete this file!", path & "vcs.cfg")
+        Call SetSectionEntry("Config", "ArchiveMyself", BoolToStr(ArchiveMyself), path & "vcs.cfg")
+        'Call SetSectionEntry("Config", "IncludeTables", Nz(INCLUDE_TABLES, "None"), path & "vcs.cfg")
+        'Commented out for now to prevent accidentially overwriting the thing.
+        Call SetSectionEntry("Config", "DebugOutput", BoolToStr(DebugOutput), path & "vcs.cfg")
+        Call SetSectionEntry("Config", "ExportReports", BoolToStr(ExportReports), path & "vcs.cfg")
+        Call SetSectionEntry("Config", "ExportForms", BoolToStr(ExportForms), path & "vcs.cfg")
+        Call SetSectionEntry("Config", "ExportQueries", BoolToStr(ExportQueries), path & "vcs.cfg")
+        Call SetSectionEntry("Config", "ExportMacros", BoolToStr(ExportMacros), path & "vcs.cfg")
+        Call SetSectionEntry("Config", "ExportModules", BoolToStr(ExportModules), path & "vcs.cfg")
+        Call SetSectionEntry("Config", "ExportTables", BoolToStr(ExportTables), path & "vcs.cfg")
+        Call SetSectionEntry("Config", "HandleQueriesAsSQL", BoolToStr(HandleQueriesAsSQL), path & "vcs.cfg")
+        Call SetSectionEntry("Config", "UpdateTemplateTable", BoolToStr(UpdateTemplateTable), path & "vcs.cfg")
     End If
     
 End Sub
