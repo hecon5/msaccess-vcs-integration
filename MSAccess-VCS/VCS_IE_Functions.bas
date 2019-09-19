@@ -118,7 +118,7 @@ Public Sub VCS_SanitizeTextFiles(ByVal Path As String, ByVal Ext As String)
         getLine = True
         
         Do Until InFile.AtEndOfStream
-            DoEvents
+            'DoEvents
             Dim txt As String
             '
             ' Check if we need to get a new line of text
