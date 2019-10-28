@@ -119,8 +119,8 @@ Dim qdf As DAO.QueryDef
             Set qdf = db.CreateQueryDef(obj_name)
             Set qdf = db.QueryDefs(obj_name)
             With qdf
-                .SQL = SQLString
                 .connect = ConnectString
+                .SQL = SQLString
                 .ReturnsRecords = retrec
             End With
         Else
