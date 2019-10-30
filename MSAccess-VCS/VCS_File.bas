@@ -126,7 +126,6 @@ Private Sub BinClose(ByRef f As BinFile)
     Close f.file_num
 End Sub
 
-
 ' Binary convert a UCS2-little-endian encoded file to UTF-8.
 Public Sub VCS_ConvertUcs2Utf8(ByVal Source As String, ByVal dest As String)
     Dim f_in As BinFile
@@ -204,10 +203,12 @@ Public Function VCS_UsingUcs2() As Boolean
     Dim obj_type_split() As String
     Dim obj_type_name As String
     Dim obj_type_num As Integer
-    
-    If CurrentDb.QueryDefs.Count > 0 Then
+    Dim dB as DAO.Database
+
+    Set dB = CurrentDb
+    If dB.QueryDefs.Count > 0 Then
         obj_type_num = acQuery
-        obj_name = CurrentDb.QueryDefs(0).Name
+        obj_name = dB.QueryDefs(0).Name
     Else
         For Each obj_type In Split( _
             "Forms|" & acForm & "," & _
@@ -219,8 +220,8 @@ Public Function VCS_UsingUcs2() As Boolean
             obj_type_split = Split(obj_type, "|")
             obj_type_name = obj_type_split(0)
             obj_type_num = Val(obj_type_split(1))
-            If CurrentDb.Containers(obj_type_name).Documents.Count > 0 Then
-                obj_name = CurrentDb.Containers(obj_type_name).Documents(0).Name
+            If dB.Containers(obj_type_name).Documents.Count > 0 Then
+                obj_name = dB.Containers(obj_type_name).Documents(0).Name
                 Exit For
             End If
         Next

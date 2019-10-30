@@ -1,3 +1,4 @@
+Attribute VB_Name = "VCS_Query"
 Option Compare Database
 Option Explicit
 
@@ -23,7 +24,7 @@ Public Sub ExportQueryAsSQL(qry As QueryDef, ByVal file_path As String, _
             End If
             writeTextToFile StartConnect & qryconnect & vbCrLf & StartRecRecords & qry.ReturnsRecords & vbCrLf & StartSQL & vbCrLf & qry.SQL, file_path
         Else
-            writeTextToFile qry.SQL, file_path
+            writeTextToFile qry.sql, file_path
         End If
     End If
 
@@ -31,25 +32,25 @@ End Sub
 
 Private Sub writeTextToFile(ByVal textToWrite As String, ByVal file_path As String)
     
-    Dim FSO As Object
-    Set FSO = CreateObject("Scripting.FileSystemObject")
+    Dim fso As Object
+    Set fso = CreateObject("Scripting.FileSystemObject")
     Dim oFile As Object
-    Set oFile = FSO.CreateTextFile(file_path)
+    Set oFile = fso.CreateTextFile(file_path)
 
     oFile.WriteLine textToWrite
     oFile.Close
     
-    Set FSO = Nothing
+    Set fso = Nothing
     Set oFile = Nothing
 
 End Sub
 
 Private Function readFromTextFile(ByVal file_path As String) As String
     Dim textRead As String
-    Dim FSO As Object
-    Set FSO = CreateObject("Scripting.FileSystemObject")
+    Dim fso As Object
+    Set fso = CreateObject("Scripting.FileSystemObject")
     Dim oFile As Object
-    Set oFile = FSO.OpenTextFile(file_path, ForReading)
+    Set oFile = fso.OpenTextFile(file_path, ForReading)
 
     Do While Not oFile.AtEndOfStream
         textRead = textRead & oFile.ReadLine & vbCrLf
@@ -59,7 +60,7 @@ Private Function readFromTextFile(ByVal file_path As String) As String
     
     oFile.Close
     
-    Set FSO = Nothing
+    Set fso = Nothing
     Set oFile = Nothing
 
 End Function
@@ -81,11 +82,10 @@ Dim qdf As DAO.QueryDef
         db.QueryDefs.Delete (obj_name)
         db.CreateQueryDef obj_name, readFromTextFile(file_path)
         
-        Dim FSO As Object
-        Set FSO = CreateObject("Scripting.FileSystemObject")
-        FSO.DeleteFile tempFileName
+        Dim fso As Object
+        Set fso = CreateObject("Scripting.FileSystemObject")
+        fso.DeleteFile tempFileName
     Else
-        'On Error Resume Next
         Dim fileStr As String
         Dim ConnectString As String
         Dim SQLString As String
@@ -120,8 +120,8 @@ Dim qdf As DAO.QueryDef
             Set qdf = db.QueryDefs(obj_name)
             With qdf
                 .connect = ConnectString
-                .SQL = SQLString
                 .ReturnsRecords = retrec
+                .SQL = SQLString
             End With
         Else
             On Error Resume Next
