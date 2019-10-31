@@ -67,11 +67,11 @@ End Function
 
 Public Sub ImportQueryFromSQL(ByVal obj_name As String, ByVal file_path As String, _
                                 Optional ByVal Ucs2Convert As Boolean = False)
-Dim db As DAO.Database
+Dim dB As DAO.Database
 Dim qdf As DAO.QueryDef
 
     If Not VCS_Dir.VCS_FileExists(file_path) Then Exit Sub
-    Set db = CurrentDb
+    Set dB = CurrentDb
     
     If Ucs2Convert Then
         
@@ -79,8 +79,8 @@ Dim qdf As DAO.QueryDef
         tempFileName = VCS_File.VCS_TempFile()
         VCS_File.VCS_ConvertUtf8Ucs2 file_path, tempFileName
         On Error Resume Next
-        db.QueryDefs.Delete (obj_name)
-        db.CreateQueryDef obj_name, readFromTextFile(file_path)
+        dB.QueryDefs.Delete (obj_name)
+        dB.CreateQueryDef obj_name, readFromTextFile(file_path)
         
         Dim fso As Object
         Set fso = CreateObject("Scripting.FileSystemObject")
@@ -132,5 +132,5 @@ Dim qdf As DAO.QueryDef
     End If
     qdf.Close
     Set qdf = Nothing
-    Set db = Nothing
+    Set dB = Nothing
 End Sub
