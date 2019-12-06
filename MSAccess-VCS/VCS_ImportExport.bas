@@ -111,7 +111,7 @@ Public Sub LoadCustomisations()
         UpdateTemplateTable = StrToBool(GetSectionEntry("Config", "UpdateTemplateTable", path), False)
 
         'save config file settings.
-        Call SetSectionEntry("Info", "FileComment", "This file is used by the VCS system for configuration information.", path & "vcs.cfg")
+        Call SetSectionEntry("Info", "FileComment", "This file is used by the VCS system for configuration information.", path)
         Call SetSectionEntry("Info", "DO-NOT-DELETE-THIS-FILE", "DO not delete this file!", path)
         Call SetSectionEntry("Config", "ArchiveMyself", BoolToStr(ArchiveMyself), path)
         'Call SetSectionEntry("Config", "IncludeTables", Nz(INCLUDE_TABLES, "None"), path)
