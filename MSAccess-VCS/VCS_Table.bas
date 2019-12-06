@@ -502,9 +502,9 @@ End Sub
 
 ' Import the lookup table `tblName` from `source\tables`.
 Public Sub VCS_ImportTableData(ByVal tblName As String, ByVal obj_path As String, Optional ByVal appendOnly As Boolean = False)
-    Dim db As Object ' DAO.Database
-    Dim rs As Object ' DAO.Recordset
-    Dim fieldObj As Object ' DAO.Field
+    Dim db As DAO.Database 'Object ' DAO.Database
+    Dim rs As DAO.Recordset 'Object ' DAO.Recordset
+    Dim fieldObj As DAO.Field 'Object ' DAO.Field
     Dim FSO As Object
     Dim InFile As Object
     Dim c As Long, buf As String, Values() As String, Value As Variant
