@@ -90,40 +90,43 @@ Public Sub LoadCustomisations()
     Dim bLoaded As Boolean
     Dim sValue As String
     Dim path As String
+    Dim VCSFileName as string
+
+    VCSFileName = "vcs.cfg"
 
     If Not bLoaded Then
-        path = VCS_Dir.VCS_ProjectPath()
+        path = VCS_Dir.VCS_ProjectPath() & VCSFileName
 
-        ' Load configuration items
-        ArchiveMyself = StrToBool(GetSectionEntry("Config", "ArchiveMyself", path & "vcs.cfg"), False)
-        INCLUDE_TABLES = GetSectionEntry("Config", "IncludeTables", path & "vcs.cfg")
-        DebugOutput = StrToBool(GetSectionEntry("Config", "DebugOutput", path & "vcs.cfg"), False)
-        ExportReports = StrToBool(GetSectionEntry("Config", "ExportReports", path & "vcs.cfg"), True)
-        ExportForms = StrToBool(GetSectionEntry("Config", "ExportForms", path & "vcs.cfg"), True)
-        ExportQueries = StrToBool(GetSectionEntry("Config", "ExportQueries", path & "vcs.cfg"), True)
-        ExportMacros = StrToBool(GetSectionEntry("Config", "ExportMacros", path & "vcs.cfg"), True)
-        ExportModules = StrToBool(GetSectionEntry("Config", "ExportModules", path & "vcs.cfg"), True)
-        ExportTables = StrToBool(GetSectionEntry("Config", "ExportTables", path & "vcs.cfg"), True)
-        HandleQueriesAsSQL = StrToBool(GetSectionEntry("Config", "HandleQueriesAsSQL", path & "vcs.cfg"), True)
-        UpdateTemplateTable = StrToBool(GetSectionEntry("Config", "UpdateTemplateTable", path & "vcs.cfg"), False)
- 
-            'save config file settings.
+        'Load configuration items
+        ArchiveMyself = StrToBool(GetSectionEntry("Config", "ArchiveMyself", path), False)
+        INCLUDE_TABLES = GetSectionEntry("Config", "IncludeTables", path)
+        DebugOutput = StrToBool(GetSectionEntry("Config", "DebugOutput", path), False)
+        ExportReports = StrToBool(GetSectionEntry("Config", "ExportReports", path), True)
+        ExportForms = StrToBool(GetSectionEntry("Config", "ExportForms", path), True)
+        ExportQueries = StrToBool(GetSectionEntry("Config", "ExportQueries", path), True)
+        ExportMacros = StrToBool(GetSectionEntry("Config", "ExportMacros", path), True)
+        ExportModules = StrToBool(GetSectionEntry("Config", "ExportModules", path), True)
+        ExportTables = StrToBool(GetSectionEntry("Config", "ExportTables", path), True)
+        HandleQueriesAsSQL = StrToBool(GetSectionEntry("Config", "HandleQueriesAsSQL", path), True)
+        UpdateTemplateTable = StrToBool(GetSectionEntry("Config", "UpdateTemplateTable", path), False)
+
+        'save config file settings.
         Call SetSectionEntry("Info", "FileComment", "This file is used by the VCS system for configuration information.", path & "vcs.cfg")
-        Call SetSectionEntry("Info", "DO-NOT-DELETE-THIS-FILE", "DO not delete this file!", path & "vcs.cfg")
-        Call SetSectionEntry("Config", "ArchiveMyself", BoolToStr(ArchiveMyself), path & "vcs.cfg")
-        'Call SetSectionEntry("Config", "IncludeTables", Nz(INCLUDE_TABLES, "None"), path & "vcs.cfg")
+        Call SetSectionEntry("Info", "DO-NOT-DELETE-THIS-FILE", "DO not delete this file!", path)
+        Call SetSectionEntry("Config", "ArchiveMyself", BoolToStr(ArchiveMyself), path)
+        'Call SetSectionEntry("Config", "IncludeTables", Nz(INCLUDE_TABLES, "None"), path)
         'Commented out for now to prevent accidentially overwriting the thing.
-        Call SetSectionEntry("Config", "DebugOutput", BoolToStr(DebugOutput), path & "vcs.cfg")
-        Call SetSectionEntry("Config", "ExportReports", BoolToStr(ExportReports), path & "vcs.cfg")
-        Call SetSectionEntry("Config", "ExportForms", BoolToStr(ExportForms), path & "vcs.cfg")
-        Call SetSectionEntry("Config", "ExportQueries", BoolToStr(ExportQueries), path & "vcs.cfg")
-        Call SetSectionEntry("Config", "ExportMacros", BoolToStr(ExportMacros), path & "vcs.cfg")
-        Call SetSectionEntry("Config", "ExportModules", BoolToStr(ExportModules), path & "vcs.cfg")
-        Call SetSectionEntry("Config", "ExportTables", BoolToStr(ExportTables), path & "vcs.cfg")
-        Call SetSectionEntry("Config", "HandleQueriesAsSQL", BoolToStr(HandleQueriesAsSQL), path & "vcs.cfg")
-        Call SetSectionEntry("Config", "UpdateTemplateTable", BoolToStr(UpdateTemplateTable), path & "vcs.cfg")
+        Call SetSectionEntry("Config", "DebugOutput", BoolToStr(DebugOutput), path)
+        Call SetSectionEntry("Config", "ExportReports", BoolToStr(ExportReports), path)
+        Call SetSectionEntry("Config", "ExportForms", BoolToStr(ExportForms), path)
+        Call SetSectionEntry("Config", "ExportQueries", BoolToStr(ExportQueries), path)
+        Call SetSectionEntry("Config", "ExportMacros", BoolToStr(ExportMacros), path)
+        Call SetSectionEntry("Config", "ExportModules", BoolToStr(ExportModules), path)
+        Call SetSectionEntry("Config", "ExportTables", BoolToStr(ExportTables), path)
+        Call SetSectionEntry("Config", "HandleQueriesAsSQL", BoolToStr(HandleQueriesAsSQL), path)
+        Call SetSectionEntry("Config", "UpdateTemplateTable", BoolToStr(UpdateTemplateTable), path)
     End If
-    
+
 End Sub
 
 ' NOTE:  VCS_ImportAllSource and VCS_ImportAllModules are in VCS_Loader
@@ -343,7 +346,8 @@ Public Sub ExportAllTables(Optional ByVal doTableDefs As Boolean = True, Optiona
                     DoEvents
                     ' This is not a system table
                     ' this is not a temporary table
-                    If Left$(td.Name, 4) <> "MSys" And Left$(td.Name, 4) <> "USys" And _
+                    If Left$(td.Name, 4) <> "MSys" And _
+                       Left$(td.Name, 4) <> "USys" And _
                        Left$(td.Name, 1) <> "~" Then
                         If doTableDefs Then
                             VCS_Table.VCS_ExportTableDef td.Name, obj_path
@@ -361,6 +365,15 @@ Public Sub ExportAllTables(Optional ByVal doTableDefs As Boolean = True, Optiona
                     DoEvents
                     On Error GoTo Err_TableNotFound
                     If InCollection(IncludeTablesCol, td.Name) Then
+                    'Check system tables; don't export those defs, but do export the data.
+                        If doTableDefs And _
+                            Left$(td.Name, 4) <> "MSys" And _
+                            Left$(td.Name, 4) <> "USys" And _
+                            Left$(td.Name, 1) <> "~" Then
+
+                            VCS_Table.VCS_ExportTableDef td.Name, obj_path
+                        End If
+
                         If doTableData Then
                             VCS_Table.VCS_ExportTableData CStr(td.Name), source_path & "tables\"
                             obj_data_count = obj_data_count + 1
@@ -1115,5 +1128,3 @@ Public Sub ImportAllQueries()
     
     VCS_Dir.VCS_DelIfExist tempFilePath
 End Sub
-
-
